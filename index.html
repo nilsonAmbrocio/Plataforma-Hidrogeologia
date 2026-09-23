@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrato — Conocimiento en Hidrogeología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --stone-50:#f4f5f3;
+    --stone-100:#eceee9;
+    --ink-900:#151d1b;
+    --ink-700:#3a4542;
+    --ink-500:#67716d;
+    --teal-700:#12494d;
+    --teal-600:#1c6469;
+    --clay-500:#a9793f;
+    --line:#d9dcd6;
+    --max:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--stone-50);
+    color:var(--ink-900);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Newsreader', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    color:var(--ink-900);
+  }
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 32px;}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(244,245,243,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px; max-width:var(--max); margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Newsreader', serif; font-size:1.25rem; font-weight:600;
+  }
+  .brand .mark{width:22px; height:22px;}
+  .nav-links{display:flex; gap:36px; font-size:0.95rem;}
+  .nav-links a{position:relative; padding:4px 0; color:var(--ink-700);}
+  .nav-links a:hover{color:var(--ink-900);}
+  .nav-links a::after{
+    content:""; position:absolute; left:0; right:0; bottom:-2px; height:1px;
+    background:var(--teal-600); transform:scaleX(0); transform-origin:left;
+    transition:transform .25s ease;
+  }
+  .nav-links a:hover::after{transform:scaleX(1);}
+  .menu-btn{display:none; background:none; border:none; cursor:pointer;}
+  .menu-btn span{display:block; width:22px; height:1.5px; background:var(--ink-900); margin:5px 0;}
+
+  /* ---------- hero ---------- */
+  .hero{padding:96px 0 88px; border-bottom:1px solid var(--line);}
+  .hero-grid{display:grid; grid-template-columns:1.15fr 0.85fr; gap:64px; align-items:center;}
+  .eyebrow-plain{color:var(--teal-700); font-size:0.95rem; margin-bottom:18px;}
+  .hero h1{font-size:3.4rem; line-height:1.08; max-width:15ch;}
+  .hero p.lead{margin-top:24px; max-width:46ch; color:var(--ink-700); font-size:1.08rem;}
+  .hero-actions{margin-top:36px; display:flex; gap:16px; align-items:center;}
+  .btn{
+    display:inline-block; padding:13px 26px; font-size:0.95rem;
+    border-radius:2px; border:1px solid var(--ink-900);
+  }
+  .btn-primary{background:var(--ink-900); color:var(--stone-50);}
+  .btn-primary:hover{background:var(--teal-700); border-color:var(--teal-700);}
+  .btn-ghost{border-color:var(--line); color:var(--ink-700);}
+  .btn-ghost:hover{border-color:var(--ink-900); color:var(--ink-900);}
+
+  /* strata svg */
+  .strata-figure{position:relative;}
+  .strata-figure .caption{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-500);
+    margin-top:10px;
+  }
+
+  /* ---------- section shell ---------- */
+  section.block{padding:88px 0; border-bottom:1px solid var(--line);}
+  section.block:last-of-type{border-bottom:none;}
+  .block-head{display:grid; grid-template-columns:0.42fr 0.58fr; gap:48px; margin-bottom:56px;}
+  .block-head h2{font-size:2.1rem; max-width:12ch;}
+  .block-head p{color:var(--ink-700); font-size:1.02rem; max-width:52ch; align-self:end;}
+  .index-no{
+    font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--clay-500);
+    margin-bottom:8px; display:block;
+  }
+
+  /* article grid */
+  .article-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .card{background:var(--stone-50); padding:32px 28px; display:flex; flex-direction:column; min-height:230px;}
+  .card .tag{font-size:0.78rem; color:var(--teal-700); margin-bottom:14px;}
+  .card h3{font-size:1.18rem; font-weight:500; line-height:1.32; margin-bottom:12px;}
+  .card p{color:var(--ink-700); font-size:0.94rem; flex-grow:1;}
+  .card .read{
+    margin-top:20px; font-size:0.88rem; color:var(--ink-900);
+    border-top:1px solid var(--line); padding-top:16px;
+  }
+  .card:hover{background:#eef1ef;}
+
+  /* ---------- about / methodology strip ---------- */
+  .strip{background:var(--teal-700); color:var(--stone-50); padding:72px 0;}
+  .strip .wrap{display:grid; grid-template-columns:0.5fr 0.5fr; gap:48px;}
+  .strip h2{color:var(--stone-50); font-size:1.9rem; max-width:14ch;}
+  .strip p{color:#cfe1de; font-size:1.02rem; max-width:48ch;}
+
+  /* ---------- newsletter / contacto ---------- */
+  .contact{padding:88px 0;}
+  .contact-grid{display:grid; grid-template-columns:0.5fr 0.5fr; gap:64px; align-items:start;}
+  .contact h2{font-size:2rem; margin-bottom:16px; max-width:12ch;}
+  .contact p{color:var(--ink-700); max-width:44ch;}
+  form{margin-top:8px;}
+  .field{display:flex; border-bottom:1px solid var(--ink-900); padding-bottom:10px; margin-bottom:22px;}
+  .field input{
+    border:none; background:none; outline:none; width:100%;
+    font-family:'IBM Plex Sans', sans-serif; font-size:1rem; color:var(--ink-900);
+  }
+  .field input::placeholder{color:var(--ink-500);}
+
+  footer{border-top:1px solid var(--line); padding:40px 0;}
+  footer .wrap{display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; color:var(--ink-500);}
+  footer .fnav{display:flex; gap:28px;}
+
+  @media (max-width:860px){
+    .nav-links{position:fixed; top:69px; left:0; right:0; bottom:0; background:var(--stone-50);
+      flex-direction:column; padding:32px; gap:24px; transform:translateX(100%);
+      transition:transform .3s ease; font-size:1.1rem;}
+    .nav-links.open{transform:translateX(0);}
+    .menu-btn{display:block;}
+    .hero-grid, .block-head, .strip .wrap, .contact-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:2.4rem; max-width:none;}
+    .article-grid{grid-template-columns:1fr;}
+    .hero{padding:56px 0;}
+    section.block{padding:56px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="#top" class="brand">
+      <svg class="mark" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 11 5 15.5C5 19.09 8.13 22 12 22C15.87 22 19 19.09 19 15.5C19 11 12 2 12 2Z" stroke="#12494d" stroke-width="1.4"/><path d="M8 15.5C8 16.5 9 18 12 18" stroke="#a9793f" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Estrato
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#hidrogeologia">Hidrogeología</a>
+      <a href="#modelamiento">Modelamiento</a>
+      <a href="#automatizacion">Automatización con Python</a>
+      <a href="#metodo">Enfoque</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow-plain">Un espacio técnico sobre agua subterránea</p>
+        <h1>Hidrogeología, modelamiento y automatización, explicados con rigor</h1>
+        <p class="lead">Estrato reúne artículos, casos prácticos y herramientas en Python para quienes trabajan con acuíferos: desde los fundamentos del flujo subterráneo hasta la construcción de modelos numéricos y su automatización.</p>
+        <div class="hero-actions">
+          <a href="#hidrogeologia" class="btn btn-primary">Explorar contenidos</a>
+          <a href="#contacto" class="btn btn-ghost">Suscribirse</a>
+        </div>
+      </div>
+      <div class="strata-figure">
+        <svg viewBox="0 0 360 300" width="100%">
+          <rect x="0" y="0" width="360" height="60" fill="#e7e2d3"/>
+          <rect x="0" y="60" width="360" height="45" fill="#d8cba8"/>
+          <rect x="0" y="105" width="360" height="70" fill="#bcd6d2"/>
+          <rect x="0" y="175" width="360" height="55" fill="#8fb9b4"/>
+          <rect x="0" y="230" width="360" height="70" fill="#12494d"/>
+          <line x1="0" y1="60" x2="360" y2="60" stroke="#151d1b" stroke-width="0.6" opacity="0.3"/>
+          <line x1="0" y1="105" x2="360" y2="105" stroke="#151d1b" stroke-width="0.6" opacity="0.3"/>
+          <line x1="0" y1="175" x2="360" y2="175" stroke="#151d1b" stroke-width="0.6" opacity="0.3"/>
+          <line x1="0" y1="230" x2="360" y2="230" stroke="#151d1b" stroke-width="0.6" opacity="0.3"/>
+          <path d="M40 175 Q 180 160 340 178" stroke="#f4f5f3" stroke-width="1.4" fill="none" stroke-dasharray="3 4" opacity="0.8"/>
+          <circle cx="130" cy="175" r="2.5" fill="#f4f5f3"/>
+          <circle cx="260" cy="177" r="2.5" fill="#f4f5f3"/>
+        </svg>
+        <p class="caption">FIG. 1 — Perfil esquemático de un acuífero libre sobre un acuífero confinado</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HIDROGEOLOGIA -->
+  <section class="block" id="hidrogeologia">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <span class="index-no">01</span>
+          <h2>Hidrogeología</h2>
+        </div>
+        <p>Fundamentos y aplicaciones sobre el agua subterránea: propiedades de acuíferos, hidroquímica, balance hídrico y caracterización de sistemas de flujo.</p>
+      </div>
+      <div class="article-grid">
+        <article class="card">
+          <span class="tag">Fundamentos</span>
+          <h3>Propiedades hidráulicas de acuíferos: porosidad, transmisividad y almacenamiento</h3>
+          <p>Cómo se definen y miden en campo los parámetros que controlan el flujo subterráneo.</p>
+          <span class="read">Leer artículo</span>
+        </article>
+        <article class="card">
+          <span class="tag">Hidroquímica</span>
+          <h3>Interpretación de diagramas de Piper y Stiff en aguas subterráneas</h3>
+          <p>Una guía práctica para identificar facies hidroquímicas y procesos de mezcla.</p>
+          <span class="read">Leer artículo</span>
+        </article>
+        <article class="card">
+          <span class="tag">Balance hídrico</span>
+          <h3>Estimación de la recarga en acuíferos mediante balance hídrico</h3>
+          <p>Métodos de campo y de gabinete para cuantificar la recarga natural.</p>
+          <span class="read">Leer artículo</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODELAMIENTO -->
+  <section class="block" id="modelamiento">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <span class="index-no">02</span>
+          <h2>Modelamiento</h2>
+        </div>
+        <p>Construcción, calibración y validación de modelos numéricos de flujo y transporte, desde el diseño conceptual hasta su aplicación en gestión de recursos hídricos.</p>
+      </div>
+      <div class="article-grid">
+        <article class="card">
+          <span class="tag">MODFLOW</span>
+          <h3>Del modelo conceptual al modelo numérico en MODFLOW</h3>
+          <p>Pasos clave para traducir la geología y la hidrogeología de un sitio en una malla de simulación.</p>
+          <span class="read">Leer artículo</span>
+        </article>
+        <article class="card">
+          <span class="tag">Calibración</span>
+          <h3>Calibración de modelos: análisis de sensibilidad y PEST</h3>
+          <p>Estrategias para ajustar parámetros y evaluar la incertidumbre del modelo.</p>
+          <span class="read">Leer artículo</span>
+        </article>
+        <article class="card">
+          <span class="tag">Transporte</span>
+          <h3>Modelamiento de transporte de solutos en medios porosos</h3>
+          <p>Conceptos de advección, dispersión y su implementación en MT3DMS.</p>
+          <span class="read">Leer artículo</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTOMATIZACION -->
+  <section class="block" id="automatizacion">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <span class="index-no">03</span>
+          <h2>Automatización con Python</h2>
+        </div>
+        <p>Scripts y flujos de trabajo reproducibles para procesar datos piezométricos, generar reportes y ejecutar modelos de forma automatizada.</p>
+      </div>
+      <div class="article-grid">
+        <article class="card">
+          <span class="tag">Pandas</span>
+          <h3>Procesamiento de series piezométricas con pandas</h3>
+          <p>Limpieza, resampleo y control de calidad de datos de niveles de agua subterránea.</p>
+          <span class="read">Leer artículo</span>
+        </article>
+        <article class="card">
+          <span class="tag">Visualización</span>
+          <h3>Hidrogramas automáticos con matplotlib y Python</h3>
+          <p>Generación de reportes gráficos reproducibles a partir de datos de monitoreo.</p>
+          <span class="read">Leer artículo</span>
+        </article>
+        <article class="card">
+          <span class="tag">FloPy</span>
+          <h3>Ejecutar y post-procesar modelos MODFLOW con FloPy</h3>
+          <p>Cómo controlar un modelo numérico completo desde un script de Python.</p>
+          <span class="read">Leer artículo</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENFOQUE -->
+  <section class="strip" id="metodo">
+    <div class="wrap">
+      <h2>Contenido escrito para la práctica, no solo para la teoría</h2>
+      <p>Cada publicación busca conectar el fundamento hidrogeológico con su aplicación: datos reales, herramientas abiertas y flujos de trabajo que puedan reproducirse en campo o en gabinete.</p>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contact" id="contacto">
+    <div class="wrap contact-grid">
+      <div>
+        <h2>Recibe nuevas publicaciones</h2>
+        <p>Un correo ocasional con artículos nuevos de hidrogeología, modelamiento y automatización. Sin spam.</p>
+      </div>
+      <form onsubmit="event.preventDefault(); alert('Formulario de ejemplo — conecta esto a tu proveedor de correo.');">
+        <div class="field">
+          <input type="text" placeholder="Nombre" required>
+        </div>
+        <div class="field">
+          <input type="email" placeholder="Correo electrónico" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Suscribirme</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Estrato — Conocimiento en hidrogeología</span>
+    <div class="fnav">
+      <a href="#hidrogeologia">Hidrogeología</a>
+      <a href="#modelamiento">Modelamiento</a>
+      <a href="#automatizacion">Automatización</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+</script>
+
+</body>
+</html>
