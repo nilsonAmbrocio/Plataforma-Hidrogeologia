@@ -1,353 +1,1279 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estrato — Conocimiento en Hidrogeología</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --stone-50:#f4f5f3;
-    --stone-100:#eceee9;
-    --ink-900:#151d1b;
-    --ink-700:#3a4542;
-    --ink-500:#67716d;
-    --teal-700:#12494d;
-    --teal-600:#1c6469;
-    --clay-500:#a9793f;
-    --line:#d9dcd6;
-    --max:1180px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--stone-50);
-    color:var(--ink-900);
-    font-family:'IBM Plex Sans', sans-serif;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.serif{
-    font-family:'Newsreader', serif;
-    font-weight:500;
-    letter-spacing:-0.01em;
-    color:var(--ink-900);
-  }
-  a{color:inherit; text-decoration:none;}
-  img,svg{display:block; max-width:100%;}
-  .wrap{max-width:var(--max); margin:0 auto; padding:0 32px;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f7f4">
+  <meta name="description" content="Estrato: una plataforma de aprendizaje sobre hidrogeología, Python, libros y herramientas para el estudio del agua subterránea.">
+  <title>Estrato | Hidrogeología, datos y herramientas</title>
 
-  /* ---------- header ---------- */
-  header{
-    position:sticky; top:0; z-index:50;
-    background:rgba(244,245,243,0.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:20px 32px; max-width:var(--max); margin:0 auto;
-  }
-  .brand{
-    display:flex; align-items:center; gap:10px;
-    font-family:'Newsreader', serif; font-size:1.25rem; font-weight:600;
-  }
-  .brand .mark{width:22px; height:22px;}
-  .nav-links{display:flex; gap:36px; font-size:0.95rem;}
-  .nav-links a{position:relative; padding:4px 0; color:var(--ink-700);}
-  .nav-links a:hover{color:var(--ink-900);}
-  .nav-links a::after{
-    content:""; position:absolute; left:0; right:0; bottom:-2px; height:1px;
-    background:var(--teal-600); transform:scaleX(0); transform-origin:left;
-    transition:transform .25s ease;
-  }
-  .nav-links a:hover::after{transform:scaleX(1);}
-  .menu-btn{display:none; background:none; border:none; cursor:pointer;}
-  .menu-btn span{display:block; width:22px; height:1.5px; background:var(--ink-900); margin:5px 0;}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
 
-  /* ---------- hero ---------- */
-  .hero{padding:96px 0 88px; border-bottom:1px solid var(--line);}
-  .hero-grid{display:grid; grid-template-columns:1.15fr 0.85fr; gap:64px; align-items:center;}
-  .eyebrow-plain{color:var(--teal-700); font-size:0.95rem; margin-bottom:18px;}
-  .hero h1{font-size:3.4rem; line-height:1.08; max-width:15ch;}
-  .hero p.lead{margin-top:24px; max-width:46ch; color:var(--ink-700); font-size:1.08rem;}
-  .hero-actions{margin-top:36px; display:flex; gap:16px; align-items:center;}
-  .btn{
-    display:inline-block; padding:13px 26px; font-size:0.95rem;
-    border-radius:2px; border:1px solid var(--ink-900);
-  }
-  .btn-primary{background:var(--ink-900); color:var(--stone-50);}
-  .btn-primary:hover{background:var(--teal-700); border-color:var(--teal-700);}
-  .btn-ghost{border-color:var(--line); color:var(--ink-700);}
-  .btn-ghost:hover{border-color:var(--ink-900); color:var(--ink-900);}
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f7f4;
+      --surface: #ffffff;
+      --surface-soft: #edf2ee;
+      --ink: #182320;
+      --ink-soft: #42504b;
+      --muted: #69756f;
+      --green: #1e5b50;
+      --green-dark: #153f39;
+      --green-pale: #e1ece7;
+      --sand: #e9e1d1;
+      --clay: #a87545;
+      --line: #dce3dd;
+      --max: 1160px;
+      --radius: 9px;
+      --shadow: 0 14px 35px rgba(24, 35, 32, 0.06);
+    }
 
-  /* strata svg */
-  .strata-figure{position:relative;}
-  .strata-figure .caption{
-    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-500);
-    margin-top:10px;
-  }
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
 
-  /* ---------- section shell ---------- */
-  section.block{padding:88px 0; border-bottom:1px solid var(--line);}
-  section.block:last-of-type{border-bottom:none;}
-  .block-head{display:grid; grid-template-columns:0.42fr 0.58fr; gap:48px; margin-bottom:56px;}
-  .block-head h2{font-size:2.1rem; max-width:12ch;}
-  .block-head p{color:var(--ink-700); font-size:1.02rem; max-width:52ch; align-self:end;}
-  .index-no{
-    font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--clay-500);
-    margin-bottom:8px; display:block;
-  }
+    html { scroll-behavior: smooth; }
 
-  /* article grid */
-  .article-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
-  .card{background:var(--stone-50); padding:32px 28px; display:flex; flex-direction:column; min-height:230px;}
-  .card .tag{font-size:0.78rem; color:var(--teal-700); margin-bottom:14px;}
-  .card h3{font-size:1.18rem; font-weight:500; line-height:1.32; margin-bottom:12px;}
-  .card p{color:var(--ink-700); font-size:0.94rem; flex-grow:1;}
-  .card .read{
-    margin-top:20px; font-size:0.88rem; color:var(--ink-900);
-    border-top:1px solid var(--line); padding-top:16px;
-  }
-  .card:hover{background:#eef1ef;}
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "DM Sans", sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* ---------- about / methodology strip ---------- */
-  .strip{background:var(--teal-700); color:var(--stone-50); padding:72px 0;}
-  .strip .wrap{display:grid; grid-template-columns:0.5fr 0.5fr; gap:48px;}
-  .strip h2{color:var(--stone-50); font-size:1.9rem; max-width:14ch;}
-  .strip p{color:#cfe1de; font-size:1.02rem; max-width:48ch;}
+    body, button, a { -webkit-tap-highlight-color: transparent; }
 
-  /* ---------- newsletter / contacto ---------- */
-  .contact{padding:88px 0;}
-  .contact-grid{display:grid; grid-template-columns:0.5fr 0.5fr; gap:64px; align-items:start;}
-  .contact h2{font-size:2rem; margin-bottom:16px; max-width:12ch;}
-  .contact p{color:var(--ink-700); max-width:44ch;}
-  form{margin-top:8px;}
-  .field{display:flex; border-bottom:1px solid var(--ink-900); padding-bottom:10px; margin-bottom:22px;}
-  .field input{
-    border:none; background:none; outline:none; width:100%;
-    font-family:'IBM Plex Sans', sans-serif; font-size:1rem; color:var(--ink-900);
-  }
-  .field input::placeholder{color:var(--ink-500);}
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    svg { display: block; max-width: 100%; }
 
-  footer{border-top:1px solid var(--line); padding:40px 0;}
-  footer .wrap{display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; color:var(--ink-500);}
-  footer .fnav{display:flex; gap:28px;}
+    .container {
+      width: min(var(--max), calc(100% - 48px));
+      margin-inline: auto;
+    }
 
-  @media (max-width:860px){
-    .nav-links{position:fixed; top:69px; left:0; right:0; bottom:0; background:var(--stone-50);
-      flex-direction:column; padding:32px; gap:24px; transform:translateX(100%);
-      transition:transform .3s ease; font-size:1.1rem;}
-    .nav-links.open{transform:translateX(0);}
-    .menu-btn{display:block;}
-    .hero-grid, .block-head, .strip .wrap, .contact-grid{grid-template-columns:1fr;}
-    .hero h1{font-size:2.4rem; max-width:none;}
-    .article-grid{grid-template-columns:1fr;}
-    .hero{padding:56px 0;}
-    section.block{padding:56px 0;}
-  }
-</style>
+    .serif,
+    h1, h2, h3 {
+      font-family: "Newsreader", Georgia, serif;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    .skip-link {
+      position: absolute;
+      z-index: 1000;
+      top: 8px;
+      left: 8px;
+      padding: 10px 14px;
+      transform: translateY(-150%);
+      background: var(--green-dark);
+      color: white;
+      border-radius: 5px;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    /* Header and navigation */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(246, 247, 244, 0.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #c8d8d0;
+      border-radius: 50%;
+      background: var(--green-pale);
+    }
+
+    .brand-name {
+      display: block;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-caption {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.66rem;
+      letter-spacing: 0.105em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .nav-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 0 13px;
+      border: 0;
+      border-radius: 5px;
+      background: transparent;
+      color: var(--ink-soft);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: color 160ms ease, background 160ms ease;
+    }
+
+    .nav-link:hover,
+    .nav-link[aria-selected="true"] {
+      background: var(--green-pale);
+      color: var(--green-dark);
+    }
+
+    .nav-link[aria-selected="true"]::after {
+      position: absolute;
+      right: 13px;
+      bottom: 5px;
+      left: 13px;
+      height: 2px;
+      background: var(--green);
+      content: "";
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 19px;
+      height: 2px;
+      margin: 4px auto;
+      background: currentColor;
+      transition: transform 160ms ease;
+    }
+
+    /* Shared page elements */
+    .tab-panel[hidden] { display: none !important; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 17px;
+      color: var(--green);
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 22px;
+      height: 1px;
+      background: var(--clay);
+      content: "";
+    }
+
+    .page-intro {
+      padding: 76px 0 48px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .page-intro h1 {
+      max-width: 760px;
+      margin-bottom: 18px;
+      font-size: clamp(2.5rem, 5vw, 4.15rem);
+      line-height: 1.04;
+    }
+
+    .page-intro .lead {
+      max-width: 720px;
+      margin-bottom: 0;
+      color: var(--ink-soft);
+      font-size: 1.06rem;
+    }
+
+    .section-block {
+      padding: 62px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 28px;
+      margin-bottom: 26px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 0;
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      line-height: 1.12;
+    }
+
+    .section-heading p {
+      max-width: 510px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .info-card {
+      min-height: 208px;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-3px);
+      border-color: #bdcfc5;
+      box-shadow: var(--shadow);
+    }
+
+    .card-kicker {
+      margin-bottom: 13px;
+      color: var(--green);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .info-card h3 {
+      margin-bottom: 9px;
+      font-size: 1.36rem;
+      line-height: 1.18;
+    }
+
+    .info-card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      margin-top: auto;
+      padding-top: 21px;
+      color: var(--green-dark);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .card-link .arrow { transition: transform 160ms ease; }
+    .card-link:hover .arrow { transform: translateX(4px); }
+
+    .soft-band {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      padding: 42px 0;
+      background: var(--green-dark);
+      color: #f5f7f3;
+    }
+
+    .soft-band-inner {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      align-items: center;
+      gap: 42px;
+    }
+
+    .soft-band h2 {
+      max-width: 440px;
+      margin-bottom: 0;
+      color: white;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      line-height: 1.12;
+    }
+
+    .soft-band p {
+      max-width: 650px;
+      margin-bottom: 0;
+      color: #d5e3dc;
+      font-size: 0.97rem;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+    .external-mark {
+      display: inline-block;
+      margin-left: 3px;
+      color: currentColor;
+      font-size: 0.8em;
+    }
+
+    .resource-card {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .resource-card .resource-type {
+      margin-bottom: 14px;
+      color: var(--clay);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .resource-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.35rem;
+      line-height: 1.2;
+    }
+
+    .resource-card p {
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .resource-card .text-link { margin-top: auto; font-size: 0.87rem; }
+
+    .note {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+      margin-top: 24px;
+      padding: 17px 19px;
+      border-left: 3px solid var(--clay);
+      background: #f0ede5;
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+    }
+
+    .note strong { color: var(--ink); }
+
+    /* Home */
+    .hero {
+      padding: 76px 0 66px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(310px, 0.92fr);
+      align-items: center;
+      gap: 58px;
+    }
+
+    .hero h1 {
+      max-width: 660px;
+      margin-bottom: 21px;
+      font-size: clamp(2.85rem, 5.6vw, 4.8rem);
+      line-height: 0.99;
+    }
+
+    .hero h1 em {
+      color: var(--green);
+      font-style: normal;
+    }
+
+    .hero-lead {
+      max-width: 580px;
+      margin-bottom: 0;
+      color: var(--ink-soft);
+      font-size: 1.06rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 11px;
+      margin-top: 29px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 19px;
+      border: 1px solid var(--green-dark);
+      border-radius: 5px;
+      background: var(--green-dark);
+      color: white;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 700;
+      transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: var(--green);
+      background: var(--green);
+    }
+
+    .button-secondary {
+      border-color: var(--line);
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .button-secondary:hover {
+      border-color: #b9c9c0;
+      background: var(--green-pale);
+      color: var(--green-dark);
+    }
+
+    .aquifer-figure {
+      overflow: hidden;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .aquifer-figure svg { width: 100%; height: auto; }
+
+    .figure-caption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 5px 1px;
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .figure-caption span:first-child {
+      color: var(--green);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .home-explore { padding: 59px 0 67px; }
+
+    .home-explore .section-heading { margin-bottom: 24px; }
+
+    .explore-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .explore-card {
+      min-height: 192px;
+      display: flex;
+      flex-direction: column;
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      transition: border-color 160ms ease, transform 160ms ease;
+    }
+
+    .explore-card:hover {
+      transform: translateY(-3px);
+      border-color: #a9c2b5;
+    }
+
+    .explore-number {
+      margin-bottom: 19px;
+      color: var(--clay);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .explore-card h3 {
+      margin-bottom: 7px;
+      font-size: 1.28rem;
+    }
+
+    .explore-card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .home-principles {
+      padding: 44px 0;
+      background: var(--surface-soft);
+    }
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 35px;
+    }
+
+    .principle h3 {
+      margin-bottom: 7px;
+      font-size: 1.22rem;
+    }
+
+    .principle p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    /* Hydrogeology and Python detail panels */
+    .topic-index {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .topic-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.55);
+      color: var(--ink-soft);
+      font-size: 0.78rem;
+    }
+
+    .learning-path {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .path-step {
+      position: relative;
+      min-height: 155px;
+      padding: 24px;
+    }
+
+    .path-step + .path-step { border-left: 1px solid var(--line); }
+
+    .path-step .step-no {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--clay);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .path-step h3 { margin-bottom: 7px; font-size: 1.27rem; }
+    .path-step p { margin-bottom: 0; color: var(--muted); font-size: 0.85rem; }
+
+    .code-example {
+      overflow: hidden;
+      border: 1px solid #2d4741;
+      border-radius: var(--radius);
+      background: #172b27;
+      color: #e6eee9;
+    }
+
+    .code-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 11px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      color: #c3d3cb;
+      font-size: 0.76rem;
+    }
+
+    .copy-button {
+      padding: 5px 9px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+
+    .copy-button:hover { background: rgba(255,255,255,0.1); }
+
+    .code-example pre {
+      overflow-x: auto;
+      margin: 0;
+      padding: 20px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.83rem;
+      line-height: 1.75;
+      tab-size: 4;
+    }
+
+    .code-comment { color: #9bb6a7; }
+    .code-keyword { color: #e2bc88; }
+    .code-string { color: #a8d6c0; }
+
+    /* About */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      align-items: start;
+      gap: 58px;
+    }
+
+    .about-aside {
+      padding: 27px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .about-monogram {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 19px;
+      border-radius: 50%;
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 1.65rem;
+    }
+
+    .about-aside h2 { margin-bottom: 8px; font-size: 1.6rem; }
+    .about-aside p { margin-bottom: 0; color: var(--muted); font-size: 0.9rem; }
+
+    .about-copy h2 { margin-bottom: 15px; font-size: 2rem; }
+    .about-copy p { color: var(--ink-soft); }
+
+    .about-list {
+      display: grid;
+      gap: 13px;
+      margin: 25px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .about-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+    }
+
+    .about-list li::before {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      margin-top: 9px;
+      border-radius: 50%;
+      background: var(--clay);
+      content: "";
+    }
+
+    /* Footer */
+    .site-footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+      background: #f1f3ef;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .footer-links { display: flex; flex-wrap: wrap; gap: 18px; }
+    .footer-links a { color: var(--ink-soft); font-size: 0.78rem; }
+    .footer-links a:hover { color: var(--green); text-decoration: underline; }
+
+    :focus-visible {
+      outline: 3px solid #b77c48;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 980px) {
+      .header-inner { min-height: 72px; }
+      .nav-link { padding-inline: 9px; font-size: 0.82rem; }
+      .hero-grid { gap: 32px; }
+      .explore-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .container { width: min(var(--max), calc(100% - 36px)); }
+      .menu-toggle { display: block; }
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 1px);
+        right: 0;
+        left: 0;
+        display: none;
+        align-items: stretch;
+        padding: 12px 18px 18px;
+        border-bottom: 1px solid var(--line);
+        background: var(--paper);
+        box-shadow: 0 14px 22px rgba(24,35,32,0.07);
+      }
+      .nav-links.is-open { display: flex; flex-direction: column; }
+      .nav-link { justify-content: flex-start; min-height: 46px; padding-inline: 13px; font-size: 0.95rem; }
+      .nav-link[aria-selected="true"]::after { right: auto; bottom: 7px; left: 13px; width: 24px; }
+      .hero { padding: 54px 0 48px; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero h1 { max-width: 620px; font-size: clamp(2.65rem, 11vw, 4rem); }
+      .aquifer-figure { max-width: 560px; }
+      .page-intro { padding: 55px 0 37px; }
+      .section-block { padding: 45px 0; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+      .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .soft-band-inner, .about-layout { grid-template-columns: 1fr; gap: 19px; }
+      .principles-grid { grid-template-columns: 1fr; gap: 24px; }
+      .learning-path { grid-template-columns: 1fr; }
+      .path-step { min-height: 0; }
+      .path-step + .path-step { border-top: 1px solid var(--line); border-left: 0; }
+      .about-layout { gap: 28px; }
+      .about-aside { max-width: 480px; }
+    }
+
+    @media (max-width: 520px) {
+      .container { width: calc(100% - 30px); }
+      .brand-caption { font-size: 0.6rem; }
+      .hero-actions { align-items: stretch; flex-direction: column; }
+      .hero-actions .button { width: 100%; }
+      .card-grid, .explore-grid { grid-template-columns: 1fr; }
+      .info-card, .resource-card { min-height: 0; }
+      .figure-caption { align-items: flex-start; flex-direction: column; gap: 3px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Saltar al contenido</a>
 
-<header>
-  <nav class="nav">
-    <a href="#top" class="brand">
-      <svg class="mark" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 11 5 15.5C5 19.09 8.13 22 12 22C15.87 22 19 19.09 19 15.5C19 11 12 2 12 2Z" stroke="#12494d" stroke-width="1.4"/><path d="M8 15.5C8 16.5 9 18 12 18" stroke="#a9793f" stroke-width="1.4" stroke-linecap="round"/></svg>
-      Estrato
-    </a>
-    <div class="nav-links" id="navLinks">
-      <a href="#hidrogeologia">Hidrogeología</a>
-      <a href="#modelamiento">Modelamiento</a>
-      <a href="#automatizacion">Automatización con Python</a>
-      <a href="#metodo">Enfoque</a>
-      <a href="#contacto">Contacto</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#inicio" aria-label="Estrato, ir al inicio" data-tab-link="inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 28 28" width="23" height="23" fill="none">
+            <path d="M14 2.8S6.3 12.2 6.3 17.1a7.7 7.7 0 0 0 15.4 0C21.7 12.2 14 2.8 14 2.8Z" stroke="#1e5b50" stroke-width="1.45"/>
+            <path d="M9.7 17.2c.2 2.2 1.9 3.8 4.3 4.1" stroke="#a87545" stroke-width="1.45" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>
+          <span class="brand-name">Estrato</span>
+          <span class="brand-caption">Hidrogeología · datos · recursos</span>
+        </span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="primaryNav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="primaryNav" role="tablist" aria-label="Secciones principales">
+        <a class="nav-link" id="tab-inicio" role="tab" aria-selected="true" aria-controls="panel-inicio" href="#inicio" data-tab="inicio">Inicio</a>
+        <a class="nav-link" id="tab-hidrogeologia" role="tab" aria-selected="false" aria-controls="panel-hidrogeologia" href="#hidrogeologia" data-tab="hidrogeologia" tabindex="-1">Hidrogeología</a>
+        <a class="nav-link" id="tab-python" role="tab" aria-selected="false" aria-controls="panel-python" href="#python" data-tab="python" tabindex="-1">Python</a>
+        <a class="nav-link" id="tab-libros" role="tab" aria-selected="false" aria-controls="panel-libros" href="#libros" data-tab="libros" tabindex="-1">Libros</a>
+        <a class="nav-link" id="tab-herramientas" role="tab" aria-selected="false" aria-controls="panel-herramientas" href="#herramientas" data-tab="herramientas" tabindex="-1">Herramientas</a>
+        <a class="nav-link" id="tab-sobre" role="tab" aria-selected="false" aria-controls="panel-sobre" href="#sobre" data-tab="sobre" tabindex="-1">Sobre</a>
+      </nav>
     </div>
-    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú"><span></span><span></span><span></span></button>
-  </nav>
-</header>
+  </header>
 
-<main id="top">
+  <main id="main-content" class="container">
+    <!-- INICIO -->
+    <section class="tab-panel" id="panel-inicio" role="tabpanel" aria-labelledby="tab-inicio" tabindex="0">
+      <div class="hero">
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">Plataforma de conocimiento</p>
+            <h1>Comprender el agua subterránea, <em>conectar ideas.</em></h1>
+            <p class="hero-lead">Un espacio para aprender y compartir conocimientos de hidrogeología, análisis de datos y modelamiento. Desde los procesos que ocurren bajo la superficie hasta las herramientas que permiten estudiarlos.</p>
+            <div class="hero-actions">
+              <a class="button" href="#hidrogeologia" data-tab-link="hidrogeologia">Explorar contenidos <span aria-hidden="true">→</span></a>
+              <a class="button button-secondary" href="#herramientas" data-tab-link="herramientas">Ver herramientas</a>
+            </div>
+          </div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <p class="eyebrow-plain">Un espacio técnico sobre agua subterránea</p>
-        <h1>Hidrogeología, modelamiento y automatización, explicados con rigor</h1>
-        <p class="lead">Estrato reúne artículos, casos prácticos y herramientas en Python para quienes trabajan con acuíferos: desde los fundamentos del flujo subterráneo hasta la construcción de modelos numéricos y su automatización.</p>
-        <div class="hero-actions">
-          <a href="#hidrogeologia" class="btn btn-primary">Explorar contenidos</a>
-          <a href="#contacto" class="btn btn-ghost">Suscribirse</a>
+          <figure class="aquifer-figure">
+            <svg viewBox="0 0 520 350" role="img" aria-labelledby="aquiferTitle aquiferDesc">
+              <title id="aquiferTitle">Esquema conceptual de un sistema acuífero</title>
+              <desc id="aquiferDesc">Corte conceptual con suelo, zona no saturada, acuífero libre, capa confinante y acuífero confinado.</desc>
+              <defs>
+                <pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1" fill="#a98d63" opacity=".45"/>
+                </pattern>
+                <pattern id="gravel" width="18" height="14" patternUnits="userSpaceOnUse">
+                  <circle cx="4" cy="5" r="2.1" fill="#628d80" opacity=".55"/>
+                  <circle cx="13" cy="10" r="2.8" fill="#628d80" opacity=".35"/>
+                </pattern>
+              </defs>
+              <rect x="0" y="0" width="520" height="350" rx="7" fill="#f8faf7"/>
+              <path d="M0 87 Q90 72 160 83 T310 77 T520 84 L520 121 L0 121Z" fill="#d9c8a6"/>
+              <path d="M0 121 L520 121 L520 205 Q405 195 300 207 T0 203Z" fill="#e6dfce"/>
+              <path d="M0 121 L520 121 L520 205 Q405 195 300 207 T0 203Z" fill="url(#dots)"/>
+              <path d="M0 203 Q120 192 240 207 T520 205 L520 278 L0 278Z" fill="#b9d4cb"/>
+              <path d="M0 203 Q120 192 240 207 T520 205 L520 278 L0 278Z" fill="url(#gravel)"/>
+              <path d="M0 278 Q130 264 260 280 T520 277 L520 350 L0 350Z" fill="#9caa9e"/>
+              <path d="M0 278 Q130 264 260 280 T520 277 L520 350 L0 350Z" fill="url(#dots)"/>
+              <path d="M0 203 Q120 192 240 207 T520 205" fill="none" stroke="#1e6a83" stroke-width="3" stroke-dasharray="7 5"/>
+              <path d="M40 85 Q130 82 215 86 T390 82" fill="none" stroke="#a87545" stroke-width="1.5" opacity=".65"/>
+              <path d="M65 87 L65 190 M65 190 L76 190" stroke="#53635b" stroke-width="1.2" fill="none"/>
+              <path d="M65 190 L65 255" stroke="#53635b" stroke-width="1.2" stroke-dasharray="3 4"/>
+              <path d="M65 255 L76 255" stroke="#53635b" stroke-width="1.2"/>
+              <line x1="405" y1="205" x2="478" y2="205" stroke="#1e6a83" stroke-width="1.2"/>
+              <text x="482" y="209" fill="#1e6a83" font-size="10" text-anchor="end" font-family="DM Sans, sans-serif">Nivel freático</text>
+              <text x="18" y="48" fill="#59665e" font-size="12" font-family="DM Sans, sans-serif">Superficie</text>
+              <text x="18" y="157" fill="#59665e" font-size="12" font-family="DM Sans, sans-serif">Zona no saturada</text>
+              <text x="18" y="239" fill="#234f47" font-size="12" font-weight="600" font-family="DM Sans, sans-serif">Acuífero libre</text>
+              <text x="18" y="319" fill="#36463f" font-size="12" font-weight="600" font-family="DM Sans, sans-serif">Acuífero confinado</text>
+              <text x="390" y="296" fill="#53635b" font-size="11" font-family="DM Sans, sans-serif">Capa de baja K</text>
+              <path d="M405 288 L440 278" stroke="#53635b" stroke-width="1"/>
+              <path d="M260 104 C264 117 265 124 260 137" stroke="#1e6a83" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M254 130 L260 138 L266 130" stroke="#1e6a83" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <figcaption class="figure-caption">
+              <span>ESQUEMA 01</span>
+              <span>Representación conceptual de un sistema acuífero</span>
+            </figcaption>
+          </figure>
         </div>
       </div>
-      <div class="strata-figure">
-        <svg viewBox="0 0 360 300" width="100%">
-          <rect x="0" y="0" width="360" height="60" fill="#e7e2d3"/>
-          <rect x="0" y="60" width="360" height="45" fill="#d8cba8"/>
-          <rect x="0" y="105" width="360" height="70" fill="#bcd6d2"/>
-          <rect x="0" y="175" width="360" height="55" fill="#8fb9b4"/>
-          <rect x="0" y="230" width="360" height="70" fill="#12494d"/>
-          <line x1="0" y1="60" x2="360" y2="60" stroke="#151d1b" stroke-width="0.6" opacity="0.3"/>
-          <line x1="0" y1="105" x2="360" y2="105" stroke="#151d1b" stroke-width="0.6" opacity="0.3"/>
-          <line x1="0" y1="175" x2="360" y2="175" stroke="#151d1b" stroke-width="0.6" opacity="0.3"/>
-          <line x1="0" y1="230" x2="360" y2="230" stroke="#151d1b" stroke-width="0.6" opacity="0.3"/>
-          <path d="M40 175 Q 180 160 340 178" stroke="#f4f5f3" stroke-width="1.4" fill="none" stroke-dasharray="3 4" opacity="0.8"/>
-          <circle cx="130" cy="175" r="2.5" fill="#f4f5f3"/>
-          <circle cx="260" cy="177" r="2.5" fill="#f4f5f3"/>
-        </svg>
-        <p class="caption">FIG. 1 — Perfil esquemático de un acuífero libre sobre un acuífero confinado</p>
-      </div>
-    </div>
-  </section>
 
-  <!-- HIDROGEOLOGIA -->
-  <section class="block" id="hidrogeologia">
-    <div class="wrap">
-      <div class="block-head">
-        <div>
-          <span class="index-no">01</span>
-          <h2>Hidrogeología</h2>
+      <section class="home-explore" aria-labelledby="exploreTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Explora la plataforma</p>
+            <h2 id="exploreTitle">Conocimiento organizado por temas</h2>
+          </div>
+          <p>Consulta contenidos técnicos, recursos de aprendizaje y herramientas para aplicar en proyectos de agua subterránea.</p>
         </div>
-        <p>Fundamentos y aplicaciones sobre el agua subterránea: propiedades de acuíferos, hidroquímica, balance hídrico y caracterización de sistemas de flujo.</p>
-      </div>
-      <div class="article-grid">
-        <article class="card">
-          <span class="tag">Fundamentos</span>
-          <h3>Propiedades hidráulicas de acuíferos: porosidad, transmisividad y almacenamiento</h3>
-          <p>Cómo se definen y miden en campo los parámetros que controlan el flujo subterráneo.</p>
-          <span class="read">Leer artículo</span>
-        </article>
-        <article class="card">
-          <span class="tag">Hidroquímica</span>
-          <h3>Interpretación de diagramas de Piper y Stiff en aguas subterráneas</h3>
-          <p>Una guía práctica para identificar facies hidroquímicas y procesos de mezcla.</p>
-          <span class="read">Leer artículo</span>
-        </article>
-        <article class="card">
-          <span class="tag">Balance hídrico</span>
-          <h3>Estimación de la recarga en acuíferos mediante balance hídrico</h3>
-          <p>Métodos de campo y de gabinete para cuantificar la recarga natural.</p>
-          <span class="read">Leer artículo</span>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- MODELAMIENTO -->
-  <section class="block" id="modelamiento">
-    <div class="wrap">
-      <div class="block-head">
-        <div>
-          <span class="index-no">02</span>
-          <h2>Modelamiento</h2>
+        <div class="explore-grid">
+          <a class="explore-card" href="#hidrogeologia" data-tab-link="hidrogeologia">
+            <span class="explore-number">01 / DISCIPLINA</span>
+            <h3>Hidrogeología</h3>
+            <p>Fundamentos, campo, pruebas hidráulicas, hidroquímica y monitoreo.</p>
+          </a>
+          <a class="explore-card" href="#python" data-tab-link="python">
+            <span class="explore-number">02 / PROGRAMACIÓN</span>
+            <h3>Python</h3>
+            <p>Análisis de datos, automatización y flujos reproducibles.</p>
+          </a>
+          <a class="explore-card" href="#libros" data-tab-link="libros">
+            <span class="explore-number">03 / BIBLIOTECA</span>
+            <h3>Libros</h3>
+            <p>Lecturas y publicaciones para profundizar en hidrogeología.</p>
+          </a>
+          <a class="explore-card" href="#herramientas" data-tab-link="herramientas">
+            <span class="explore-number">04 / RECURSOS</span>
+            <h3>Herramientas</h3>
+            <p>Software, documentación y plataformas de uso técnico.</p>
+          </a>
         </div>
-        <p>Construcción, calibración y validación de modelos numéricos de flujo y transporte, desde el diseño conceptual hasta su aplicación en gestión de recursos hídricos.</p>
-      </div>
-      <div class="article-grid">
-        <article class="card">
-          <span class="tag">MODFLOW</span>
-          <h3>Del modelo conceptual al modelo numérico en MODFLOW</h3>
-          <p>Pasos clave para traducir la geología y la hidrogeología de un sitio en una malla de simulación.</p>
-          <span class="read">Leer artículo</span>
-        </article>
-        <article class="card">
-          <span class="tag">Calibración</span>
-          <h3>Calibración de modelos: análisis de sensibilidad y PEST</h3>
-          <p>Estrategias para ajustar parámetros y evaluar la incertidumbre del modelo.</p>
-          <span class="read">Leer artículo</span>
-        </article>
-        <article class="card">
-          <span class="tag">Transporte</span>
-          <h3>Modelamiento de transporte de solutos en medios porosos</h3>
-          <p>Conceptos de advección, dispersión y su implementación en MT3DMS.</p>
-          <span class="read">Leer artículo</span>
-        </article>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- AUTOMATIZACION -->
-  <section class="block" id="automatizacion">
-    <div class="wrap">
-      <div class="block-head">
-        <div>
-          <span class="index-no">03</span>
-          <h2>Automatización con Python</h2>
+      <section class="home-principles" aria-label="Principios de la plataforma">
+        <div class="principles-grid">
+          <div class="principle">
+            <h3>Fundamento técnico</h3>
+            <p>Explicar los procesos físicos y los conceptos que sostienen la interpretación hidrogeológica.</p>
+          </div>
+          <div class="principle">
+            <h3>Aplicación práctica</h3>
+            <p>Conectar la teoría con el trabajo de campo, el análisis de información y el modelamiento.</p>
+          </div>
+          <div class="principle">
+            <h3>Aprendizaje abierto</h3>
+            <p>Reunir documentación, lecturas y recursos que ayuden a seguir aprendiendo.</p>
+          </div>
         </div>
-        <p>Scripts y flujos de trabajo reproducibles para procesar datos piezométricos, generar reportes y ejecutar modelos de forma automatizada.</p>
-      </div>
-      <div class="article-grid">
-        <article class="card">
-          <span class="tag">Pandas</span>
-          <h3>Procesamiento de series piezométricas con pandas</h3>
-          <p>Limpieza, resampleo y control de calidad de datos de niveles de agua subterránea.</p>
-          <span class="read">Leer artículo</span>
-        </article>
-        <article class="card">
-          <span class="tag">Visualización</span>
-          <h3>Hidrogramas automáticos con matplotlib y Python</h3>
-          <p>Generación de reportes gráficos reproducibles a partir de datos de monitoreo.</p>
-          <span class="read">Leer artículo</span>
-        </article>
-        <article class="card">
-          <span class="tag">FloPy</span>
-          <h3>Ejecutar y post-procesar modelos MODFLOW con FloPy</h3>
-          <p>Cómo controlar un modelo numérico completo desde un script de Python.</p>
-          <span class="read">Leer artículo</span>
-        </article>
-      </div>
-    </div>
-  </section>
+      </section>
+    </section>
 
-  <!-- ENFOQUE -->
-  <section class="strip" id="metodo">
-    <div class="wrap">
-      <h2>Contenido escrito para la práctica, no solo para la teoría</h2>
-      <p>Cada publicación busca conectar el fundamento hidrogeológico con su aplicación: datos reales, herramientas abiertas y flujos de trabajo que puedan reproducirse en campo o en gabinete.</p>
-    </div>
-  </section>
-
-  <!-- CONTACTO -->
-  <section class="contact" id="contacto">
-    <div class="wrap contact-grid">
-      <div>
-        <h2>Recibe nuevas publicaciones</h2>
-        <p>Un correo ocasional con artículos nuevos de hidrogeología, modelamiento y automatización. Sin spam.</p>
-      </div>
-      <form onsubmit="event.preventDefault(); alert('Formulario de ejemplo — conecta esto a tu proveedor de correo.');">
-        <div class="field">
-          <input type="text" placeholder="Nombre" required>
+    <!-- HIDROGEOLOGÍA -->
+    <section class="tab-panel" id="panel-hidrogeologia" role="tabpanel" aria-labelledby="tab-hidrogeologia" tabindex="0" hidden>
+      <div class="page-intro">
+        <div class="eyebrow">01 / Disciplina</div>
+        <h1>Hidrogeología</h1>
+        <p class="lead">Conceptos y métodos para estudiar la presencia, el movimiento y la calidad del agua subterránea. Una ruta que integra geología, observaciones de campo, ensayos hidráulicos e interpretación de datos.</p>
+        <div class="topic-index" aria-label="Temas de hidrogeología">
+          <span class="topic-pill">Fundamentos</span><span class="topic-pill">Acuíferos</span><span class="topic-pill">Pruebas hidráulicas</span><span class="topic-pill">Hidroquímica</span><span class="topic-pill">Monitoreo</span><span class="topic-pill">Recarga</span>
         </div>
-        <div class="field">
-          <input type="email" placeholder="Correo electrónico" required>
+      </div>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><p class="eyebrow">Áreas de conocimiento</p><h2>Temas principales</h2></div>
+          <p>Una organización temática para consultar los conceptos esenciales y avanzar hacia aplicaciones de campo y gabinete.</p>
         </div>
-        <button type="submit" class="btn btn-primary">Suscribirme</button>
-      </form>
+        <div class="card-grid">
+          <article class="info-card"><span class="card-kicker">01 · Conceptos</span><h3>Fundamentos del flujo subterráneo</h3><p>Porosidad, permeabilidad, conductividad hidráulica, ley de Darcy, carga hidráulica y gradiente.</p></article>
+          <article class="info-card"><span class="card-kicker">02 · Sistemas</span><h3>Caracterización de acuíferos</h3><p>Tipos de acuíferos, unidades hidroestratigráficas, parámetros hidráulicos y sistemas de flujo.</p></article>
+          <article class="info-card"><span class="card-kicker">03 · Campo</span><h3>Pruebas hidráulicas</h3><p>Ensayos de bombeo, slug tests, Lefranc y Lugeon: objetivos, ejecución e interpretación.</p></article>
+          <article class="info-card"><span class="card-kicker">04 · Calidad</span><h3>Hidroquímica</h3><p>Parámetros fisicoquímicos, iones mayoritarios, facies hidroquímicas y diagramas de Piper y Stiff.</p></article>
+          <article class="info-card"><span class="card-kicker">05 · Seguimiento</span><h3>Monitoreo de agua subterránea</h3><p>Piezometría, instrumentación, control de calidad de datos e interpretación de series temporales.</p></article>
+          <article class="info-card"><span class="card-kicker">06 · Gestión</span><h3>Recarga y balance hídrico</h3><p>Estimación de recarga, interacción río-acuífero, descarga y evaluación de componentes del balance.</p></article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Ruta de aprendizaje</p><h2>Del contexto a la interpretación</h2></div></div>
+        <div class="learning-path">
+          <div class="path-step"><span class="step-no">ETAPA 01</span><h3>Entender el sistema</h3><p>Geología, geomorfología, clima, unidades hidrogeológicas y modelo conceptual.</p></div>
+          <div class="path-step"><span class="step-no">ETAPA 02</span><h3>Obtener evidencia</h3><p>Inventario de fuentes, perforaciones, pruebas hidráulicas, muestreo y monitoreo.</p></div>
+          <div class="path-step"><span class="step-no">ETAPA 03</span><h3>Interpretar resultados</h3><p>Parámetros, mapas, secciones, hidroquímica, balances y modelo hidrogeológico.</p></div>
+        </div>
+      </section>
+      <section class="soft-band"><div class="container soft-band-inner"><h2>La interpretación empieza con un buen modelo conceptual.</h2><p>Los datos de campo adquieren significado cuando se analizan dentro del contexto geológico e hidrogeológico del sitio. Esta sección reunirá guías y ejemplos para construir esa interpretación paso a paso.</p></div></section>
+    </section>
+
+    <!-- PYTHON -->
+    <section class="tab-panel" id="panel-python" role="tabpanel" aria-labelledby="tab-python" tabindex="0" hidden>
+      <div class="page-intro">
+        <div class="eyebrow">02 / Programación aplicada</div>
+        <h1>Python para hidrogeología</h1>
+        <p class="lead">Usa programación para organizar información, analizar datos de monitoreo, automatizar tareas repetitivas y conectar herramientas de modelamiento con flujos de trabajo reproducibles.</p>
+        <div class="topic-index" aria-label="Temas de Python"><span class="topic-pill">Python</span><span class="topic-pill">Pandas</span><span class="topic-pill">NumPy</span><span class="topic-pill">Matplotlib</span><span class="topic-pill">GeoPandas</span><span class="topic-pill">FloPy</span></div>
+      </div>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Líneas de trabajo</p><h2>Programar para resolver problemas técnicos</h2></div><p>Una progresión desde los fundamentos del lenguaje hasta la automatización de procesos hidrogeológicos.</p></div>
+        <div class="card-grid">
+          <article class="info-card"><span class="card-kicker">01 · Fundamentos</span><h3>Python desde cero</h3><p>Variables, estructuras de datos, condicionales, ciclos, funciones y lectura de archivos.</p></article>
+          <article class="info-card"><span class="card-kicker">02 · Datos</span><h3>Análisis con Pandas</h3><p>Importación, limpieza, transformación, filtros, fechas y control de calidad de bases de datos.</p></article>
+          <article class="info-card"><span class="card-kicker">03 · Gráficos</span><h3>Visualización técnica</h3><p>Hidrogramas, series temporales, diagramas de dispersión y gráficos para reportes.</p></article>
+          <article class="info-card"><span class="card-kicker">04 · Automatización</span><h3>Reportes y tareas repetitivas</h3><p>Procesamiento por lotes, generación de fichas, exportación a Excel y organización de resultados.</p></article>
+          <article class="info-card"><span class="card-kicker">05 · Geoespacial</span><h3>Datos espaciales</h3><p>Lectura y análisis de información vectorial, sistemas de coordenadas y operaciones GIS.</p></article>
+          <article class="info-card"><span class="card-kicker">06 · Modelamiento</span><h3>MODFLOW y FloPy</h3><p>Preparación de modelos, ejecución de simulaciones y postprocesamiento desde Python.</p></article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Ejemplo breve</p><h2>Leer una serie de niveles</h2></div><p>Ejemplo ilustrativo para importar una tabla CSV y revisar sus primeras filas con Pandas.</p></div>
+        <div class="code-example">
+          <div class="code-topbar"><span>analisis_piezometrico.py</span><button class="copy-button" id="copyCode" type="button">Copiar código</button></div>
+          <pre><code id="pythonSnippet"><span class="code-keyword">import</span> pandas <span class="code-keyword">as</span> pd
+
+<span class="code-comment"># Leer la tabla de monitoreo</span>
+datos = pd.read_csv(<span class="code-string">"niveles_piezometricos.csv"</span>)
+
+<span class="code-comment"># Convertir la fecha y ordenar los registros</span>
+datos[<span class="code-string">"fecha"</span>] = pd.to_datetime(datos[<span class="code-string">"fecha"</span>])
+datos = datos.sort_values(<span class="code-string">"fecha"</span>)
+
+<span class="code-comment"># Revisar estructura y valores iniciales</span>
+<span class="code-keyword">print</span>(datos.head())</code></pre>
+        </div>
+        <p class="note"><span aria-hidden="true">i</span><span><strong>Nota:</strong> el ejemplo supone que el archivo CSV contiene una columna llamada <code>fecha</code>. Ajusta el nombre de la columna y la ruta del archivo a tu propia base de datos.</span></p>
+      </section>
+      <section class="soft-band"><div class="container soft-band-inner"><h2>Menos tareas manuales, más tiempo para analizar.</h2><p>La automatización no reemplaza el criterio hidrogeológico: ayuda a ordenar los datos, documentar los procedimientos y repetir los análisis de forma consistente.</p></div></section>
+    </section>
+
+    <!-- LIBROS -->
+    <section class="tab-panel" id="panel-libros" role="tabpanel" aria-labelledby="tab-libros" tabindex="0" hidden>
+      <div class="page-intro">
+        <div class="eyebrow">03 / Biblioteca</div>
+        <h1>Libros y lecturas</h1>
+        <p class="lead">Una selección de bibliotecas y repositorios para consultar libros, manuales y publicaciones técnicas relacionadas con las aguas subterráneas. Se priorizan fuentes institucionales y materiales de acceso abierto.</p>
+      </div>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Bibliotecas recomendadas</p><h2>Fuentes para profundizar</h2></div><p>Los enlaces conducen a catálogos externos. La disponibilidad, el idioma y las condiciones de acceso dependen de cada institución.</p></div>
+        <div class="card-grid">
+          <article class="resource-card"><span class="resource-type">Libros · Acceso abierto</span><h3>The Groundwater Project</h3><p>Libros gratuitos sobre hidráulica, acuíferos, geología, hidroquímica, contaminación, modelamiento y otros temas de aguas subterráneas.</p><a class="text-link" href="https://gw-project.org/books/" target="_blank" rel="noopener noreferrer">Explorar biblioteca <span class="external-mark" aria-hidden="true">↗</span></a></article>
+          <article class="resource-card"><span class="resource-type">Publicaciones · Investigación</span><h3>USGS Publications Warehouse</h3><p>Repositorio de informes científicos, manuales y publicaciones técnicas del Servicio Geológico de los Estados Unidos.</p><a class="text-link" href="https://pubs.usgs.gov/" target="_blank" rel="noopener noreferrer">Consultar publicaciones <span class="external-mark" aria-hidden="true">↗</span></a></article>
+          <article class="resource-card"><span class="resource-type">Software · Documentación</span><h3>Documentación de MODFLOW 6</h3><p>Documentación técnica y publicaciones asociadas al modelo numérico de flujo y transporte desarrollado por USGS.</p><a class="text-link" href="https://www.usgs.gov/software/modflow-6-usgs-modular-hydrologic-model" target="_blank" rel="noopener noreferrer">Ver documentación <span class="external-mark" aria-hidden="true">↗</span></a></article>
+        </div>
+        <div class="note"><span aria-hidden="true">i</span><span>Esta biblioteca funciona como punto de partida. Estrato no aloja ni redistribuye libros de terceros; enlaza a los sitios de sus autores o instituciones responsables.</span></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Áreas de lectura</p><h2>Organiza tu búsqueda</h2></div></div>
+        <div class="topic-index"><span class="topic-pill">Hidrogeología general</span><span class="topic-pill">Hidráulica subterránea</span><span class="topic-pill">Caracterización de acuíferos</span><span class="topic-pill">Hidroquímica</span><span class="topic-pill">Contaminación</span><span class="topic-pill">Modelamiento numérico</span><span class="topic-pill">Gestión de recursos hídricos</span></div>
+      </section>
+    </section>
+
+    <!-- HERRAMIENTAS -->
+    <section class="tab-panel" id="panel-herramientas" role="tabpanel" aria-labelledby="tab-herramientas" tabindex="0" hidden>
+      <div class="page-intro">
+        <div class="eyebrow">04 / Recursos técnicos</div>
+        <h1>Herramientas</h1>
+        <p class="lead">Software y documentación para trabajar con datos hidrogeológicos, análisis espacial y modelos numéricos. Los enlaces llevan a las páginas oficiales de cada proyecto o institución.</p>
+      </div>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Modelamiento de aguas subterráneas</p><h2>Modelos y utilidades</h2></div><p>Recursos para construir, ejecutar, revisar y procesar modelos de flujo y transporte.</p></div>
+        <div class="card-grid">
+          <article class="resource-card"><span class="resource-type">USGS · Modelo numérico</span><h3>MODFLOW 6</h3><p>Framework de modelamiento para simular flujo de agua subterránea y procesos relacionados.</p><a class="text-link" href="https://www.usgs.gov/software/modflow-6-usgs-modular-hydrologic-model" target="_blank" rel="noopener noreferrer">Sitio oficial <span class="external-mark" aria-hidden="true">↗</span></a></article>
+          <article class="resource-card"><span class="resource-type">USGS · Interfaz gráfica</span><h3>ModelMuse</h3><p>Interfaz gráfica para preparar modelos MODFLOW y otros modelos hidrogeológicos compatibles.</p><a class="text-link" href="https://www.usgs.gov/software/modelmuse-a-graphical-user-interface-groundwater-models" target="_blank" rel="noopener noreferrer">Sitio oficial <span class="external-mark" aria-hidden="true">↗</span></a></article>
+          <article class="resource-card"><span class="resource-type">Python · Modelamiento</span><h3>FloPy</h3><p>Paquete de Python para crear, ejecutar y procesar modelos basados en MODFLOW.</p><a class="text-link" href="https://flopy.readthedocs.io/en/latest/" target="_blank" rel="noopener noreferrer">Documentación <span class="external-mark" aria-hidden="true">↗</span></a></article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Programación y análisis</p><h2>Datos y automatización</h2></div></div>
+        <div class="card-grid">
+          <article class="resource-card"><span class="resource-type">Lenguaje</span><h3>Python</h3><p>Lenguaje de programación utilizado para análisis de datos, automatización y desarrollo científico.</p><a class="text-link" href="https://www.python.org/" target="_blank" rel="noopener noreferrer">Sitio oficial <span class="external-mark" aria-hidden="true">↗</span></a></article>
+          <article class="resource-card"><span class="resource-type">Análisis de datos</span><h3>Pandas</h3><p>Herramientas para manipular y analizar datos tabulares y series temporales.</p><a class="text-link" href="https://pandas.pydata.org/docs/" target="_blank" rel="noopener noreferrer">Documentación <span class="external-mark" aria-hidden="true">↗</span></a></article>
+          <article class="resource-card"><span class="resource-type">Entorno interactivo</span><h3>Jupyter</h3><p>Entorno para desarrollar y compartir análisis reproducibles mediante notebooks.</p><a class="text-link" href="https://jupyter.org/" target="_blank" rel="noopener noreferrer">Sitio oficial <span class="external-mark" aria-hidden="true">↗</span></a></article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Sistemas de información geográfica</p><h2>Análisis espacial</h2></div></div>
+        <div class="card-grid">
+          <article class="resource-card"><span class="resource-type">SIG · Código abierto</span><h3>QGIS</h3><p>Sistema de información geográfica para visualizar, editar y analizar información espacial.</p><a class="text-link" href="https://qgis.org/" target="_blank" rel="noopener noreferrer">Sitio oficial <span class="external-mark" aria-hidden="true">↗</span></a></article>
+          <article class="resource-card"><span class="resource-type">Geoprocesamiento · Python</span><h3>GeoPandas</h3><p>Extiende las capacidades de Pandas para trabajar con datos geoespaciales vectoriales.</p><a class="text-link" href="https://geopandas.org/en/stable/" target="_blank" rel="noopener noreferrer">Documentación <span class="external-mark" aria-hidden="true">↗</span></a></article>
+          <article class="resource-card"><span class="resource-type">Datos geográficos</span><h3>USGS Water Data</h3><p>Portal de datos y observaciones hidrológicas del Servicio Geológico de los Estados Unidos.</p><a class="text-link" href="https://waterdata.usgs.gov/" target="_blank" rel="noopener noreferrer">Consultar datos <span class="external-mark" aria-hidden="true">↗</span></a></article>
+        </div>
+        <p class="note"><span aria-hidden="true">i</span><span>Antes de utilizar un software en un proyecto, revisa su versión, licencia, compatibilidad y documentación vigente.</span></p>
+      </section>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="tab-panel" id="panel-sobre" role="tabpanel" aria-labelledby="tab-sobre" tabindex="0" hidden>
+      <div class="page-intro">
+        <div class="eyebrow">05 / El proyecto</div>
+        <h1>Sobre Estrato</h1>
+        <p class="lead">Un espacio independiente para reunir conocimiento técnico y recursos de aprendizaje sobre hidrogeología, programación y herramientas aplicadas al estudio del agua subterránea.</p>
+      </div>
+
+      <section class="section-block">
+        <div class="about-layout">
+          <aside class="about-aside">
+            <div class="about-monogram" aria-hidden="true">E.</div>
+            <h2>Conocimiento que conecta disciplinas</h2>
+            <p>Hidrogeología · Ciencia de datos · Modelamiento</p>
+          </aside>
+          <div class="about-copy">
+            <p class="eyebrow">Propósito</p>
+            <h2>Acercar la hidrogeología a la práctica.</h2>
+            <p>Estrato nace con la idea de que el conocimiento técnico puede ser más accesible cuando se presenta de forma clara, ordenada y vinculada con problemas reales. La plataforma busca conectar los fundamentos de las aguas subterráneas con métodos de análisis, programación y modelamiento.</p>
+            <p>El contenido está dirigido a estudiantes, profesionales y personas interesadas en comprender cómo se estudian los acuíferos y cómo las herramientas digitales pueden apoyar ese trabajo.</p>
+            <ul class="about-list">
+              <li>Explicar conceptos hidrogeológicos con rigor y lenguaje claro.</li>
+              <li>Compartir ejemplos de análisis y automatización con Python.</li>
+              <li>Reunir libros, documentación y herramientas de consulta.</li>
+              <li>Promover flujos de trabajo reproducibles y aprendizaje continuo.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="soft-band"><div class="container soft-band-inner"><h2>Una plataforma en construcción.</h2><p>Los contenidos se irán incorporando progresivamente. La intención es priorizar materiales útiles, referencias verificables y ejemplos que puedan adaptarse al trabajo técnico.</p></div></section>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Contacto y colaboración</p><h2>Conecta con el proyecto</h2></div><p>El repositorio público permite revisar la estructura de la página y seguir sus actualizaciones.</p></div>
+        <a class="button" href="https://github.com/nilsonambrocio/Plataforma-Hidrogeologia" target="_blank" rel="noopener noreferrer">Ver proyecto en GitHub <span aria-hidden="true">↗</span></a>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© <span id="currentYear">2026</span> Estrato · Conocimiento en hidrogeología</p>
+      <div class="footer-links" aria-label="Enlaces del pie de página">
+        <a href="#inicio" data-tab-link="inicio">Inicio</a>
+        <a href="#hidrogeologia" data-tab-link="hidrogeologia">Hidrogeología</a>
+        <a href="#python" data-tab-link="python">Python</a>
+        <a href="#sobre" data-tab-link="sobre">Sobre</a>
+      </div>
     </div>
-  </section>
+  </footer>
 
-</main>
+  <script>
+    (() => {
+      "use strict";
 
-<footer>
-  <div class="wrap">
-    <span>© 2026 Estrato — Conocimiento en hidrogeología</span>
-    <div class="fnav">
-      <a href="#hidrogeologia">Hidrogeología</a>
-      <a href="#modelamiento">Modelamiento</a>
-      <a href="#automatizacion">Automatización</a>
-    </div>
-  </div>
-</footer>
+      const validTabs = ["inicio", "hidrogeologia", "python", "libros", "herramientas", "sobre"];
+      const nav = document.getElementById("primaryNav");
+      const menuToggle = document.getElementById("menuToggle");
+      const tabLinks = Array.from(document.querySelectorAll("[data-tab]"));
+      const tabPanels = Array.from(document.querySelectorAll("[role='tabpanel']"));
+      const tabTriggers = Array.from(document.querySelectorAll("[data-tab-link]"));
 
-<script>
-  const menuBtn = document.getElementById('menuBtn');
-  const navLinks = document.getElementById('navLinks');
-  menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
-</script>
+      function getTabFromHash() {
+        const hash = window.location.hash.replace(/^#/, "");
+        return validTabs.includes(hash) ? hash : "inicio";
+      }
 
+      function closeMobileMenu() {
+        nav.classList.remove("is-open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Abrir menú");
+      }
+
+      function activateTab(tabName, updateHistory = true, moveFocus = false) {
+        const selectedTab = validTabs.includes(tabName) ? tabName : "inicio";
+
+        tabLinks.forEach((link) => {
+          const isActive = link.dataset.tab === selectedTab;
+          link.setAttribute("aria-selected", String(isActive));
+          link.tabIndex = isActive ? 0 : -1;
+        });
+
+        tabPanels.forEach((panel) => {
+          const isActive = panel.id === `panel-${selectedTab}`;
+          panel.hidden = !isActive;
+        });
+
+        if (updateHistory && window.location.hash !== `#${selectedTab}`) {
+          window.history.pushState({ tab: selectedTab }, "", `#${selectedTab}`);
+        }
+
+        closeMobileMenu();
+
+        if (moveFocus) {
+          const activeLink = document.getElementById(`tab-${selectedTab}`);
+          if (activeLink) activeLink.focus();
+        }
+      }
+
+      tabLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          activateTab(link.dataset.tab);
+        });
+      });
+
+      tabTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", (event) => {
+          const targetTab = trigger.dataset.tabLink;
+          if (!validTabs.includes(targetTab)) return;
+          event.preventDefault();
+          activateTab(targetTab);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      });
+
+      nav.addEventListener("keydown", (event) => {
+        const currentIndex = tabLinks.indexOf(document.activeElement);
+        if (currentIndex < 0) return;
+
+        let nextIndex = currentIndex;
+        if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabLinks.length;
+        else if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabLinks.length) % tabLinks.length;
+        else if (event.key === "Home") nextIndex = 0;
+        else if (event.key === "End") nextIndex = tabLinks.length - 1;
+        else return;
+
+        event.preventDefault();
+        activateTab(tabLinks[nextIndex].dataset.tab, true, true);
+      });
+
+      menuToggle.addEventListener("click", () => {
+        const willOpen = menuToggle.getAttribute("aria-expanded") !== "true";
+        nav.classList.toggle("is-open", willOpen);
+        menuToggle.setAttribute("aria-expanded", String(willOpen));
+        menuToggle.setAttribute("aria-label", willOpen ? "Cerrar menú" : "Abrir menú");
+      });
+
+      window.addEventListener("popstate", () => activateTab(getTabFromHash(), false));
+      window.addEventListener("hashchange", () => activateTab(getTabFromHash(), false));
+
+      const year = document.getElementById("currentYear");
+      if (year) year.textContent = String(new Date().getFullYear());
+
+      const copyButton = document.getElementById("copyCode");
+      const codeElement = document.getElementById("pythonSnippet");
+      if (copyButton && codeElement) {
+        copyButton.addEventListener("click", async () => {
+          const codeText = codeElement.innerText;
+          try {
+            await navigator.clipboard.writeText(codeText);
+            copyButton.textContent = "Copiado";
+          } catch (error) {
+            copyButton.textContent = "No disponible";
+          }
+          window.setTimeout(() => {
+            copyButton.textContent = "Copiar código";
+          }, 1800);
+        });
+      }
+
+      activateTab(getTabFromHash(), false);
+    })();
+  </script>
 </body>
 </html>
